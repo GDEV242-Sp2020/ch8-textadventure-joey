@@ -119,6 +119,10 @@ public class Game
                 letsLook();
                 break;
                 
+            case DAB:
+                dotheDab();
+                break;
+                
             case QUIT:
                 wantToQuit = quit(command);
                 break;
@@ -173,6 +177,10 @@ public class Game
         System.out.println(currentRoom.getLongDescription());
     }
     
+    private void dotheDab()
+    {
+        System.out.println("You dabbed, aren't you disappointing.");
+    }
     /** 
      * "Quit" was entered. Check the rest of the command to see
      * whether we really quit the game.
