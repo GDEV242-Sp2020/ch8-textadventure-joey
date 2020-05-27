@@ -34,30 +34,108 @@ public class Game
      */
     private void createRooms()
     {
-        Room outside, theater, pub, lab, office;
+        Room outsideEntry, entryway, tavernExterior, tavernInterior,backroom,
+        LeveloneNorthHallway,classroomSci,classroomMath,LeveloneEastHallway,broomCloset,LeveloneWestHallway,classroomEng,classroomHist,
+        LeveltwoEntryway, gymArena;
       
         // create the rooms
-        outside = new Room("outside the main entrance of the university");
-        theater = new Room("in a lecture theater");
-        pub = new Room("in the campus pub");
-        lab = new Room("in a computing lab");
-        office = new Room("in the computing admin office");
+        
+        //Outside/exterior rooms
+        outsideEntry = new Room("outside the main entrance of the academy");
+        tavernExterior = new Room("outside of a local tavern, there is a sign" +
+        " that says Moe's Tavern");
+        
+        //Tavern rooms
+        tavernInterior = new Room("in Moe's Tavern, you see a few patron and" +
+        " a not-so-good-looking bartender");
+        backroom = new Room("now in the backroom, it is dark, very dark." +
+        " Suddenly you find a knife to your throat");
+        
+        //Breakpoint Academy Lvl 1
+        entryway = new Room("in the entrance");
+        LeveloneNorthHallway = new Room("now going down a hall, you spot a"+
+        " door on your West and a door on your East. You also spot a" +
+        " stairway going up");
+        LeveloneEastHallway = new Room("now going down a hall, you"+
+        " only see lockers and a door far down there");
+        LeveloneWestHallway = new Room("now going down a hall, you see two" +
+        " doors, one at the end and one going north");
+        
+        //North Hall Level 1
+        classroomSci = new Room("in a science classroom, you see beakers" +
+        " and test tubes around");
+        classroomMath = new Room("in a math classroom, there are fractions," +
+        " decimals, even calculus written on the boards");
+        
+        //East Hall Level 1
+        broomCloset = new Room ("in a broom closet, there is only toilet" +
+        " paper and another door");
+        
+        //West Hall Level 1
+        classroomEng = new Room ("in a nice and simple classroom, having" +
+        " many books and writing utensils. It must be an English classroom");
+        classroomHist = new Room ("in a classroom with many maps, history pamphlets" + 
+        " laminated and tapped on the wall");
+        
+        //Breakpoint Academy Lvl 2
+        LeveltwoEntryway = new Room( "on the second floor." +
+        " In front of you was a set of gym doors as well" +
+        " as two halls to go to the other side, as well as" +
+        " the stairs behind you");
+        
+        //Gym
+        gymArena = new Room("in a mix between a gym and an" +
+        " arena. There are many students in the middle of it." +
+        " They were surrounding white tables with many Nervo Inc." +
+        " Break Belts™. These transformation devices allow for students" +
+        "and registered basic soldiers to dawn Breakpoint Nano-Energy" +
+        " Armor. They are pretty basic");
         
         // initialise room exits
-        outside.setExit("east", theater);
-        outside.setExit("south", lab);
-        outside.setExit("west", pub);
+        outsideEntry.setExit("north", entryway);
+        outsideEntry.setExit("east", tavernExterior);
+        
+        tavernExterior.setExit("west", outsideEntry);
+        tavernExterior.setExit("north", tavernInterior);
+        
+        tavernInterior.setExit("south", tavernExterior);
+        tavernInterior.setExit("north", backroom);
+        
+        entryway.setExit("south",outsideEntry);
+        entryway.setExit("north", LeveloneNorthHallway);
+        entryway.setExit("east", LeveloneEastHallway);
+        entryway.setExit("west", LeveloneWestHallway);
+        
+        LeveloneNorthHallway.setExit("north", LeveltwoEntryway);
+        LeveloneNorthHallway.setExit("west", classroomSci);
+        LeveloneNorthHallway.setExit("east", classroomMath);
+        LeveloneNorthHallway.setExit("south", entryway);
+        
+        classroomSci.setExit("east", LeveloneNorthHallway);
+        
+        classroomMath.setExit("west", LeveloneNorthHallway);
+        
+        LeveloneEastHallway.setExit("east", broomCloset);
+        LeveloneEastHallway.setExit("west", entryway);
+        
+         broomCloset.setExit("east", broomCloset);
+        broomCloset.setExit("west", LeveloneEastHallway);
+        
+        LeveloneWestHallway.setExit("north", classroomEng);
+        LeveloneWestHallway.setExit("west", classroomHist);
+        LeveloneWestHallway.setExit("east", entryway);
+        
+        classroomEng.setExit("south",LeveloneWestHallway);
+        
+        classroomHist.setExit("east",LeveloneWestHallway);
+        
+        LeveltwoEntryway.setExit("north", LeveloneNorthHallway);
+        LeveltwoEntryway.setExit("south", gymArena);
+        
+        gymArena.setExit("north",LeveltwoEntryway);
+        
 
-        theater.setExit("west", outside);
-
-        pub.setExit("east", outside);
-
-        lab.setExit("north", outside);
-        lab.setExit("east", office);
-
-        office.setExit("west", lab);
-
-        currentRoom = outside;  // start game outside
+        currentRoom = outsideEntry;  // start game outside
     }
 
     /**
@@ -84,9 +162,12 @@ public class Game
     private void printWelcome()
     {
         System.out.println();
-        System.out.println("Welcome to the World of Zuul!");
-        System.out.println("World of Zuul is a new, incredibly boring adventure game.");
+        System.out.println("Welcome to Breakpoint Academy!");
+        System.out.println("Here you will be able to explore the wonders of");
+        System.out.println("the Break Belt System and train to become a new soldier.");
         System.out.println("Type '" + CommandWord.HELP + "' if you need help.");
+        System.out.println("Your command words are:");
+        parser.showCommands();
         System.out.println();
         System.out.println(currentRoom.getLongDescription());
     }
