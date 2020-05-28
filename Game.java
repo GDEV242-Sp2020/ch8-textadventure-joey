@@ -113,11 +113,14 @@ public class Game
         LeveloneNorthHallway.setExit("south", entryway);
         
         classroomSci.setExit("east", LeveloneNorthHallway);
+        classroomSci.addItem(new Item("Key", "a small key that has an E on it", 1));
         
         classroomMath.setExit("west", LeveloneNorthHallway);
         
-        LeveloneEastHallway.setExit("east", broomCloset);
-        LeveloneEastHallway.setExit("west", entryway);
+        //LeveloneEastHallway.setExit("east", broomCloset);
+        
+        
+       LeveloneEastHallway.setExit("west", entryway);
         
         broomCloset.setExit("east", broomCloset);
         broomCloset.setExit("west", LeveloneEastHallway);
@@ -151,7 +154,7 @@ public class Game
                 
         boolean finished = false;
         while (! finished) {
-            deathRoomCheck();
+            RoomCheck();
             playerDeath();
             Command command = parser.getCommand();
             finished = processCommand(command);
@@ -224,7 +227,7 @@ public class Game
                 break;
             
             case PICK:
-                player.addItem(currentRoom.removeItem(command.getSecondWord()));
+                pickUp(command.getSecondWord());
                 break;
         }
         return wantToQuit;
@@ -272,6 +275,25 @@ public class Game
         }
     }
 
+    private void pickUp(String item)
+    {
+        if (item == null){
+            System.out.println("You try to pick up something that doesn't" +
+            " exist, you look like a dunce.");
+        }
+        else {
+            for (Item object : currentRoom.getItems()){
+                if (object.getName().equals(item)){
+                    player.addItem(currentRoom.removeItem(item));
+                    System.out.println("You got a " + item + ".");
+                    return;
+                }
+            }
+            System.out.println("You try to pick up something that doesn't" +
+            " exist, you look like a dunce.");
+        }
+    }
+    
     private void lookObject(String object)
     {
         if (object.equals("room")){
@@ -302,10 +324,19 @@ public class Game
         System.out.println("You dabbed, aren't you disappointing.");
     }
     
-    private void deathRoomCheck()
+    private void RoomCheck()
     {
         if (currentRoom == backroom){
             player.healthDecrease(100);
+        }
+        if (currentRoom == LeveloneEastHallway){
+            for (Item item : player.getInventory()){
+                if (item.getName().equals("Key")){
+                    LeveloneEastHallway.setExit("east", broomCloset);
+                    System.out.println("You used the key to unlock the broom closet.");
+                    
+                }
+            }
         }
     }
     
