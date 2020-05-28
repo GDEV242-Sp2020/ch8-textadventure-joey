@@ -102,7 +102,7 @@ public class Game
         
         tavernInterior.setExit("south", tavernExterior);
         tavernInterior.setExit("north", backroom);
-        tavernInterior.addItem(new Item("Mug of Beer", "A pint of fresh beer", 1));
+        tavernInterior.addItem(new Item("Beer", "A pint of fresh beer", 1));
         
         entryway.setExit("south",outsideEntry);
         entryway.setExit("north", LeveloneNorthHallway);
@@ -200,7 +200,12 @@ public class Game
                 break;
 
             case LOOK:
-                letsLook();
+                if (command.hasSecondWord()){
+                    lookObject(command.getSecondWord());
+                }
+                else{
+                    letsLook();
+                }
                 break;
                 
             case DAB:
@@ -260,6 +265,26 @@ public class Game
         }
     }
 
+    private void lookObject(String object)
+    {
+        if (object.equals("room")){
+            System.out.println(currentRoom.getLongDescription());
+            return;
+        }
+        for (Item item : currentRoom.getItems()){
+            if (item.getName().equals(object)){
+                System.out.println(item.getDescription());
+                return;
+            }
+        }
+        for (Item item : player.getInventory()){
+            if (item.getName().equals(object)){
+                System.out.println(item.getDescription() + " in your inventory.");
+                return;
+            }
+        }
+    }
+    
     private void letsLook()
     {
         System.out.println(currentRoom.getLongDescription());

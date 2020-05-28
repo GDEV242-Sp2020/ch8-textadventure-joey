@@ -33,6 +33,7 @@ public class Room
     {
         this.description = description;
         exits = new HashMap<>();
+        items = new ArrayList();
     }
 
     /**
@@ -63,7 +64,8 @@ public class Room
      */
     public String getLongDescription()
     {
-        return "You are " + description + ".\n" + getExitString();
+        return "You are " + description + 
+        ".\n" + itemString() + "\n" + getExitString();
     }
 
     /**
@@ -81,6 +83,15 @@ public class Room
         return returnString;
     }
 
+    public String itemString()
+    {
+        String returnString = "Items in the room:";
+        for (Item item : items){
+            returnString += " " + item.getName();
+        }
+        return returnString;
+    }
+    
     public void addItem(Item anyItem)
     {
         if (anyItem == null){
@@ -103,6 +114,11 @@ public class Room
             }
         }
         return null;
+    }
+    
+    public ArrayList<Item> getItems()
+    {
+        return items;
     }
     
     /**
