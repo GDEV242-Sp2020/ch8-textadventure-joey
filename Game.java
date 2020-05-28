@@ -19,6 +19,7 @@ public class Game
 {
     private Parser parser;
     private Room currentRoom;
+    private Player player;
         
     /**
      * Create the game and initialise its internal map.
@@ -27,6 +28,7 @@ public class Game
     {
         createRooms();
         parser = new Parser();
+        player = new Player();
     }
 
     /**
@@ -100,6 +102,7 @@ public class Game
         
         tavernInterior.setExit("south", tavernExterior);
         tavernInterior.setExit("north", backroom);
+        tavernInterior.addItem(new Item("Mug of Beer", "A pint of fresh beer", 1));
         
         entryway.setExit("south",outsideEntry);
         entryway.setExit("north", LeveloneNorthHallway);
@@ -206,6 +209,10 @@ public class Game
                 
             case QUIT:
                 wantToQuit = quit(command);
+                break;
+            
+            case PICK:
+                player.addItem(currentRoom.removeItem(command.getSecondWord()));
                 break;
         }
         return wantToQuit;
