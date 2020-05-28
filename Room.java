@@ -6,15 +6,18 @@ import java.util.ArrayList;
 /**
  * Class Room - a room in an adventure game.
  *
- * This class is part of the "World of Zuul" application. 
- * "World of Zuul" is a very simple, text based adventure game.  
+ * This class is part of the "Breakpoint Academy" text-based
+ *  game.
  *
  * A "Room" represents one location in the scenery of the game.  It is 
  * connected to other rooms via exits.  For each existing exit, the room 
  * stores a reference to the neighboring room.
  * 
- * @author  Michael Kölling and David J. Barnes
- * @version 2016.02.29
+ * This also allows for a room to contain multiple items, which are put
+ * in the Game class under each room registered.
+ * 
+ * @author Joey McGuane
+ * @version 2016.05.28
  */
 
 public class Room 
@@ -60,7 +63,8 @@ public class Room
      * Return a description of the room in the form:
      *     You are in the kitchen.
      *     Exits: north west
-     * @return A long description of this room
+     * @return A long description of this room as well as if any items are
+     * in the room
      */
     public String getLongDescription()
     {
@@ -83,6 +87,11 @@ public class Room
         return returnString;
     }
 
+    /**
+     * Creates an items in the room section, displaying any item in the room.
+     * This is returned to the getLongDescription method from "itemString()".
+     */
+    
     public String itemString()
     {
         String returnString = "Items in the room:";
@@ -91,6 +100,10 @@ public class Room
         }
         return returnString;
     }
+    
+    /**
+     * Adds an item to a particular room, used in the Game class.
+     */
     
     public void addItem(Item anyItem)
     {
@@ -102,6 +115,11 @@ public class Room
         }
         
     }
+    
+    /**
+     * Allows for an item to be removed from a room and placed in the
+     * inventory.
+     */
     
     public Item removeItem(String itemtoRemove)
     {
@@ -115,6 +133,10 @@ public class Room
         }
         return null;
     }
+    
+    /**
+     * Gives the array list of items in the room.
+     */
     
     public ArrayList<Item> getItems()
     {

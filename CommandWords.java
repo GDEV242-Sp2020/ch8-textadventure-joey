@@ -1,14 +1,16 @@
 import java.util.HashMap;
 
 /**
- * This class is part of the "World of Zuul" application. 
- * "World of Zuul" is a very simple, text based adventure game.
+ * This class is part of the "Breakpoint Academy" text-based
+ *  game. 
  * 
  * This class holds an enumeration of all command words known to the game.
  * It is used to recognise commands as they are typed in.
  *
- * @author  Michael Kölling and David J. Barnes
- * @version 2016.02.29
+ * No changes or additions to methods were put here.
+ *
+ * @author Joey McGuane
+ * @version 2020.05.28
  */
 
 public class CommandWords

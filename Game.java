@@ -1,18 +1,12 @@
+
 /**
- *  This class is the main class of the "World of Zuul" application. 
- *  "World of Zuul" is a very simple, text based adventure game.  Users 
- *  can walk around some scenery. That's all. It should really be extended 
- *  to make it more interesting!
+ *  This class is the main class to run the "Breakpoint Academy" text-based
+ *  game. The game allows you to wander around, collect items, do small actions
+ *  and more. It contains one death screen and some little easter eggs here or
+ *  there. 
  * 
- *  To play this game, create an instance of this class and call the "play"
- *  method.
- * 
- *  This main class creates and initialises all the others: it creates all
- *  rooms, creates the parser and starts the game.  It also evaluates and
- *  executes the commands that the parser returns.
- * 
- * @author  Michael Kölling and David J. Barnes
- * @version 2016.02.29
+ * @author Joey McGuane
+ * @version 2020.05.28
  */
 
 public class Game 
@@ -34,7 +28,8 @@ public class Game
     }
 
     /**
-     * Create all the rooms and link their exits together.
+     * Create all the rooms and link their exits together as well
+     * as place items in each room that are desired to have them.
      */
     private void createRooms()
     {
@@ -43,53 +38,57 @@ public class Game
         //Outside/exterior rooms
         outsideEntry = new Room("outside the main entrance of the academy");
         tavernExterior = new Room("outside of a local tavern, there is a sign" +
-        " that says Moe's Tavern");
+        "\n that says Moe's Tavern");
         
-        //Tavern rooms
+        //Tavern rooms, backroom is oneway trapdoor
         tavernInterior = new Room("in Moe's Tavern, you see a few patron and" +
-        " a not-so-good-looking bartender. There is a door to the back");
+        "\n a not-so-good-looking bartender. There is a door to the back." +
+        "\n the bartender has a drink out, saying 'It is on the house.'" +
+        "\n He says 'Don't go to the backroom.'");
         backroom = new Room("now in the backroom, it is dark, very dark." +
-        " Suddenly you find a knife to your throat");
+        "\n Suddenly you find a knife to your throat. You hear the" +
+        "\n bartender say 'I told you' before you feel the knife glide" +
+        "\n through your neck, you collapse");
         
         //Breakpoint Academy Lvl 1
         entryway = new Room("in the entrance");
         LeveloneNorthHallway = new Room("now going down a hall, you spot a"+
-        " door on your West and a door on your East. You also spot a" +
-        " stairway going up");
+        "\n door on your West and a door on your East. You also spot a" +
+        "\n stairway going up");
         LeveloneEastHallway = new Room("now going down a hall, you"+
-        " only see lockers and a door far down there");
+        "\n only see lockers and a door far down there");
         LeveloneWestHallway = new Room("now going down a hall, you see two" +
-        " doors, one at the end and one going north");
+        "\n doors, one at the end and one going north");
         
         //North Hall Level 1
         classroomSci = new Room("in a science classroom, you see beakers" +
-        " and test tubes around");
+        "\n and test tubes around");
         classroomMath = new Room("in a math classroom, there are fractions," +
-        " decimals, even calculus written on the boards");
+        "\n decimals, even calculus written on the boards");
         
         //East Hall Level 1
         broomCloset = new Room ("in a broom closet, there is only toilet" +
-        " paper and another door");
+        "\n paper and another door");
         
         //West Hall Level 1
         classroomEng = new Room ("in a nice and simple classroom, having" +
-        " many books and writing utensils. It must be an English classroom");
+        "\n many books and writing utensils. It must be an English classroom");
         classroomHist = new Room ("in a classroom with many maps, history pamphlets" + 
-        " laminated and tapped on the wall");
+        "\n laminated and tapped on the wall");
         
         //Breakpoint Academy Lvl 2
         LeveltwoEntryway = new Room( "on the second floor." +
-        " In front of you was a set of gym doors as well" +
-        " as two halls to go to the other side, as well as" +
-        " the stairs behind you");
+        "\n In front of you was a set of gym doors as well" +
+        "\n as two halls to go to the other side, as well as" +
+        "\n the stairs behind you");
         
         //Gym
         gymArena = new Room("in a mix between a gym and an" +
-        " arena. There are many students in the middle of it." +
-        " They were surrounding white tables with many Nervo Inc." +
-        " Break Belts™. These transformation devices allow for students" +
-        "and registered basic soldiers to dawn Breakpoint Nano-Energy" +
-        " Armor. They are pretty basic");
+        "\n arena. There are many students in the middle of it." +
+        "\n They were surrounding white tables with many Nervo Inc." +
+        "\n Break Belts™. These transformation devices allow for students" +
+        "\n and registered basic soldiers to dawn Breakpoint Nano-Energy" +
+        "\n Armor. They are pretty basic");
         
         // initialise room exits
         outsideEntry.setExit("north", entryway);
@@ -137,13 +136,22 @@ public class Game
         LeveltwoEntryway.setExit("south", gymArena);
         
         gymArena.setExit("north",LeveltwoEntryway);
-        
+        gymArena.addItem(new Item("BreakBelt", "A silver and bulky device." + 
+        "\n It looks to have a circular lightbulb-like piece in the center." +
+        "\n On the belt buckle, there seems to be a piece sticking out," +
+        "\n a slot within the piece, waiting for the power source.", 3));
+        gymArena.addItem(new Item("PointCore", "A small, cylindrical object." +
+        "\n It has a glowing blue energy within, on the case it says" +
+        "\n 'Defending Soldier', one of the three basic Point Core types." +
+        "\n It looks like it could fit in a Break Belt easily.", 1));
 
         currentRoom = outsideEntry;  // start game outside
     }
 
     /**
-     *  Main play routine.  Loops until end of play.
+     *  Main play routine. Loops until end of play.
+     *  Also relays the death screen, but does not end until
+     *  "quit" is put, but also doesn't let you leave.
      */
     public void play() 
     {            
@@ -161,7 +169,11 @@ public class Game
         }
         System.out.println("Thank you for playing.  Good bye.");
     }
-
+    
+    /**
+     * Gives a literal death screen if the player health is too low.
+     */
+    
     private void playerDeath()
     {
         if (player.getHealth() <= 0){
@@ -177,7 +189,8 @@ public class Game
         System.out.println();
         System.out.println("Welcome to Breakpoint Academy!");
         System.out.println("Here you will be able to explore the wonders of");
-        System.out.println("the Break Belt System and train to become a new soldier.");
+        System.out.println("the Break Belt System and train to" +
+        "\n become a new Breakpoint soldier.");
         System.out.println("Type '" + CommandWord.HELP + "' if you need help.");
         System.out.println("Your command words are:");
         parser.showCommands();
@@ -242,8 +255,8 @@ public class Game
      */
     private void printHelp() 
     {
-        System.out.println("You are lost. You are alone. You wander");
-        System.out.println("around at the university.");
+        System.out.println("You arrive. You are alone. You wander");
+        System.out.println("around at the academy.");
         System.out.println();
         System.out.println("Your command words are:");
         parser.showCommands();
@@ -274,12 +287,20 @@ public class Game
             System.out.println(currentRoom.getLongDescription());
         }
     }
-
+    
+    /**
+     * Allows for the player to pick up an item that's in the room.
+     * They store the item in their inventory. This also prevents
+     * players from gaining items outside the room and when there are no
+     * items or the specified item is not there or is taken, it gives
+     * the text below.
+     */
+    
     private void pickUp(String item)
     {
         if (item == null){
             System.out.println("You try to pick up something that doesn't" +
-            " exist, you look like a dunce.");
+            "\n exist, you look like a dunce.");
         }
         else {
             for (Item object : currentRoom.getItems()){
@@ -290,9 +311,17 @@ public class Game
                 }
             }
             System.out.println("You try to pick up something that doesn't" +
-            " exist, you look like a dunce.");
+            "\n exist, you look like a dunce.");
         }
     }
+    
+    /**
+     * Uses the "look" command when in conjunction with an item
+     * name as a second object gives the item's description.
+     * If "look room" is typed, it simply gives the description
+     * of the room. This is merely a precaution if the player
+     * believes they must put room to check around the room.
+     */
     
     private void lookObject(String object)
     {
@@ -314,15 +343,31 @@ public class Game
         }
     }
     
+    /**
+     * Gives the description of the room.
+     */
+    
     private void letsLook()
     {
         System.out.println(currentRoom.getLongDescription());
     }
     
+    
+    /**
+     * A simple text response, mainly for memes.
+     */
+    
     private void dotheDab()
     {
         System.out.println("You dabbed, aren't you disappointing.");
     }
+    
+    /**
+     * Checks the current room for certain instances and items.
+     * If the player goes into the backroom at Moe's, he dies.
+     * If the player has the "Key" item in their inventory,
+     * they gain access to the locked broom closet room.
+     */
     
     private void RoomCheck()
     {
@@ -333,7 +378,8 @@ public class Game
             for (Item item : player.getInventory()){
                 if (item.getName().equals("Key")){
                     LeveloneEastHallway.setExit("east", broomCloset);
-                    System.out.println("You used the key to unlock the broom closet.");
+                    System.out.println("You used the key to unlock" +
+                    "\n the broom closet.");
                     
                 }
             }
