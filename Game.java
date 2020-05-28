@@ -20,7 +20,9 @@ public class Game
     private Parser parser;
     private Room currentRoom;
     private Player player;
-        
+    private Room outsideEntry, entryway, tavernExterior, tavernInterior,backroom,
+        LeveloneNorthHallway,classroomSci,classroomMath,LeveloneEastHallway,broomCloset,LeveloneWestHallway,classroomEng,classroomHist,
+        LeveltwoEntryway, gymArena;
     /**
      * Create the game and initialise its internal map.
      */
@@ -36,10 +38,6 @@ public class Game
      */
     private void createRooms()
     {
-        Room outsideEntry, entryway, tavernExterior, tavernInterior,backroom,
-        LeveloneNorthHallway,classroomSci,classroomMath,LeveloneEastHallway,broomCloset,LeveloneWestHallway,classroomEng,classroomHist,
-        LeveltwoEntryway, gymArena;
-      
         // create the rooms
         
         //Outside/exterior rooms
@@ -49,7 +47,7 @@ public class Game
         
         //Tavern rooms
         tavernInterior = new Room("in Moe's Tavern, you see a few patron and" +
-        " a not-so-good-looking bartender");
+        " a not-so-good-looking bartender. There is a door to the back");
         backroom = new Room("now in the backroom, it is dark, very dark." +
         " Suddenly you find a knife to your throat");
         
@@ -121,7 +119,7 @@ public class Game
         LeveloneEastHallway.setExit("east", broomCloset);
         LeveloneEastHallway.setExit("west", entryway);
         
-         broomCloset.setExit("east", broomCloset);
+        broomCloset.setExit("east", broomCloset);
         broomCloset.setExit("west", LeveloneEastHallway);
         
         LeveloneWestHallway.setExit("north", classroomEng);
@@ -153,12 +151,21 @@ public class Game
                 
         boolean finished = false;
         while (! finished) {
+            deathRoomCheck();
+            playerDeath();
             Command command = parser.getCommand();
             finished = processCommand(command);
         }
         System.out.println("Thank you for playing.  Good bye.");
     }
 
+    private void playerDeath()
+    {
+        if (player.getHealth() <= 0){
+            System.out.println("You have died, please type quit to end game");
+        }
+    }
+    
     /**
      * Print out the opening message for the player.
      */
@@ -294,6 +301,14 @@ public class Game
     {
         System.out.println("You dabbed, aren't you disappointing.");
     }
+    
+    private void deathRoomCheck()
+    {
+        if (currentRoom == backroom){
+            player.healthDecrease(100);
+        }
+    }
+    
     /** 
      * "Quit" was entered. Check the rest of the command to see
      * whether we really quit the game.

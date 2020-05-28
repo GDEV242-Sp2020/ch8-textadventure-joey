@@ -13,6 +13,7 @@ public class Player
     public Player()
     {
         inventory = new ArrayList();
+        hP = 100;
     }
     
     public void addItem(Item newItem)
@@ -23,5 +24,15 @@ public class Player
      public ArrayList<Item> getInventory()
     {
         return inventory;
+    }
+    
+    public void healthDecrease(int hP)
+    {
+        this.hP -= hP;
+    }
+    
+    public int getHealth()
+    {
+        return hP;
     }
 }
